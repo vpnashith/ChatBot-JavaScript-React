@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+
+      //this is a React component, it is a function that returns JSX (a syntax extension for JavaScript that looks similar to HTML)
+      function ChatInput(){
+        return (
+          //this is a React Fragment, it allows us to return multiple elements without adding an extra node to the DOM
+          <>
+            <input 
+              placeholder= "Send a message to chatbot" 
+              size="30" 
+            />
+            <button>Send</button>
+          </>
+        )
+      };
+
+    // Component for chat message
+    function ChatMessage({message, sender}){
+      /* const message = props.message;
+         const sender = props.sender; */
+      // OR
+      // const {message, sender} = props;
+
+      /*if (sender === "robot"){
+        return (
+      <div>
+        <img src="robot.png" width="50" />
+        {message}
+      </div>
+        );
+      }*/
+
+      return (
+      <div>
+        {sender === "robot" && <img src="robot.png" width="50" />}
+        {message}
+        {sender === "user" && <img src="user.png" width="50" />}
+      </div>
+      )
+    };
+
+    // Best practice is to create a component for the app and render it to the DOM, 
+    // Which represent the whole application and it can contain other components inside it.
+    function App(){
+        return (
+          <div>
+            <ChatInput />
+            <ChatMessage message="Hello chatbot" sender="user" />
+            <ChatMessage message="Hi What Can I do for you ?" sender="robot" />
+            <ChatMessage message="What is React ?" sender="user" />
+            <ChatMessage message="React is a JavaScript library for building user interfaces." sender="robot" />
+        </div>
+      );
+    }
+
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
