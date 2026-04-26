@@ -52,17 +52,47 @@
       )
     };
 
+    function ChatMessages(){
+      const chatMessages = [
+        {
+          message: "Hello chatbot",
+          sender: "user"
+        },
+        {
+          message: "Hi how can I help",
+          sender: "robot"
+        },
+        {
+          message: "what is react?",
+          sender: "user"
+        },
+        {
+          message: "react is JS library for building UI",
+          sender: "robot"
+        }
+      ];
+     return (
+      <>
+        {chatMessages.map((chatMessage, index) => {
+          return (
+            <ChatMessage 
+              key={index} 
+              message={chatMessage.message} 
+              sender={chatMessage.sender} 
+            />
+          );
+        })}
+      </>
+    );
+    }
     // Best practice is to create a component for the app and render it to the DOM, 
     // Which represent the whole application and it can contain other components inside it.
     function App(){
         return (
           <div>
             <ChatInput />
-            <ChatMessage message="Hello chatbot" sender="user" />
-            <ChatMessage message="Hi What Can I do for you ?" sender="robot" />
-            <ChatMessage message="What is React ?" sender="user" />
-            <ChatMessage message="React is a JavaScript library for building user interfaces." sender="robot" />
-        </div>
+            <ChatMessages />
+          </div>
       );
     }
 
