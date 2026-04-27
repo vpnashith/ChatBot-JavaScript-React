@@ -53,26 +53,52 @@
     };
 
     function ChatMessages(){
-      const chatMessages = [
-        {
-          message: "Hello chatbot",
-          sender: "user"
-        },
-        {
-          message: "Hi how can I help",
-          sender: "robot"
-        },
-        {
-          message: "what is react?",
-          sender: "user"
-        },
-        {
-          message: "react is JS library for building UI",
-          sender: "robot"
-        }
-      ];
+      // We have to make the chat messages to states for when an update is hapening , it shoud update the HTML also, otherwise it only 
+      // update the list, it wont reflect the HTML 
+      // To make it as a state, we can use "React.useState()"
+
+      const array = React.useState(  //This will return two variable: 1. the current data 2. a function that used to update the data
+        [
+          {
+            message: "Hello chatbot",
+            sender: "user"
+          },
+          {
+            message: "Hi how can I help",
+            sender: "robot"
+          },
+          {
+            message: "what is react?",
+            sender: "user"
+          },
+          {
+            message: "react is JS library for building UI",
+            sender: "robot"
+          }
+        ]
+      );
+      const chatMessages = array[0];
+      const setChatMessages = array[1]; // In react we do not update the data directly, we have to use this function, otherwise the HTML won't get updated
+            
+      function sendMessage(){
+        // setChatMessages works s.t it will update the current value with whatever we are given.
+        // Since we are using this function to update the array, react will rerun the code internally and HTML will updated
+        setChatMessages([
+          ...chatMessages, // copy the chatMessages array . <spread operator>
+          {
+            message: "what is 1+1",
+            sender: "user"
+          }
+        ]
+        );
+        
+    }
+
      return (
       <>
+
+        <button onClick={sendMessage}>Send message</button>
+
         {chatMessages.map((chatMessage, index) => {
           return (
             <ChatMessage 
@@ -85,6 +111,8 @@
       </>
     );
     }
+
+  
     // Best practice is to create a component for the app and render it to the DOM, 
     // Which represent the whole application and it can contain other components inside it.
     function App(){
@@ -96,7 +124,7 @@
       );
     }
 
-      const container = document.querySelector('.js-container');
+    const container = document.querySelector('.js-container');
       ReactDOM.createRoot(container).render(<App />);
     </script>
   </body>
