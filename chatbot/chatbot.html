@@ -14,15 +14,34 @@
     <script type="text/babel">
 
       //this is a React component, it is a function that returns JSX (a syntax extension for JavaScript that looks similar to HTML)
-      function ChatInput(){
+      function ChatInput({chatMessages, setChatMessages}){
+        const [inputText, setInputText] = React.useState(); // this is a state variable, it will hold the value of the input text, and setInputText is a function that we can use to update the value of inputText
+        
+        function saveInputText(event){
+          setInputText(event.target.value)
+        }
+
+        function sendMessage(){
+        // setChatMessages works s.t it will update the current value with whatever we are given.
+        // Since we are using this function to update the array, react will rerun the code internally and HTML will updated
+        setChatMessages([
+            ...chatMessages, // copy the chatMessages array . <spread operator>
+            {
+              message: "what is 1+1",
+              sender: "user"
+            }
+          ]
+        );
+        }
         return (
           //this is a React Fragment, it allows us to return multiple elements without adding an extra node to the DOM
           <>
             <input 
               placeholder= "Send a message to chatbot" 
               size="30" 
+              onChange={saveInputText}
             />
-            <button>Send</button>
+            <button onClick={sendMessage}>Send</button>
           </>
         )
       };
@@ -52,12 +71,31 @@
       )
     };
 
-    function ChatMessages(){
+    function ChatMessages({chatMessages}){
+     return (
+      <>
+        {chatMessages.map((chatMessage, index) => {
+          return (
+            <ChatMessage 
+              key={index} 
+              message={chatMessage.message} 
+              sender={chatMessage.sender} 
+            />
+          );
+        })}
+      </>
+    );
+    }
+
+  
+    // Best practice is to create a component for the app and render it to the DOM, 
+    // Which represent the whole application and it can contain other components inside it.
+    function App(){
       // We have to make the chat messages to states for when an update is hapening , it shoud update the HTML also, otherwise it only 
       // update the list, it wont reflect the HTML 
       // To make it as a state, we can use "React.useState()"
-
-      const array = React.useState(  //This will return two variable: 1. the current data 2. a function that used to update the data
+      // Note: in react we use state to save the data that changes over time
+      const [chatMessages, setChatMessages] = React.useState(  //This will return two variable: 1. the current data 2. a function that used to update the data
         [
           {
             message: "Hello chatbot",
@@ -77,49 +115,18 @@
           }
         ]
       );
-      const chatMessages = array[0];
-      const setChatMessages = array[1]; // In react we do not update the data directly, we have to use this function, otherwise the HTML won't get updated
-            
-      function sendMessage(){
-        // setChatMessages works s.t it will update the current value with whatever we are given.
-        // Since we are using this function to update the array, react will rerun the code internally and HTML will updated
-        setChatMessages([
-          ...chatMessages, // copy the chatMessages array . <spread operator>
-          {
-            message: "what is 1+1",
-            sender: "user"
-          }
-        ]
-        );
-        
-    }
+      // const chatMessages = array[0];
+      // const setChatMessages = array[1]; // In react we do not update the data directly, we have to use this function, otherwise the HTML won't get updated
 
-     return (
-      <>
-
-        <button onClick={sendMessage}>Send message</button>
-
-        {chatMessages.map((chatMessage, index) => {
-          return (
-            <ChatMessage 
-              key={index} 
-              message={chatMessage.message} 
-              sender={chatMessage.sender} 
-            />
-          );
-        })}
-      </>
-    );
-    }
-
-  
-    // Best practice is to create a component for the app and render it to the DOM, 
-    // Which represent the whole application and it can contain other components inside it.
-    function App(){
-        return (
+    return (
           <div>
-            <ChatInput />
-            <ChatMessages />
+            <ChatInput 
+              chatMessages={chatMessages} 
+              setChatMessages={setChatMessages}
+            />
+            <ChatMessages 
+              chatMessages={chatMessages}
+            />
           </div>
       );
     }
