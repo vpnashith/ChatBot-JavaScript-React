@@ -9,6 +9,9 @@
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
+    <!-- // This is the chatbot logic, it will handle the logic of the chatbot, and it will be imported in the App component, so we can use it to get the response from the chatbot -->
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script> 
+
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
 
     <script type="text/babel">
@@ -18,20 +21,33 @@
         const [inputText, setInputText] = React.useState(""); // this is a state variable, it will hold the value of the input text, and setInputText is a function that we can use to update the value of inputText
         
         function saveInputText(event){
-          setInputText(event.target.value)
+          setInputText(event.target.value);
         }
 
         function sendMessage(){
         // setChatMessages works s.t it will update the current value with whatever we are given.
         // Since we are using this function to update the array, react will rerun the code internally and HTML will updated
-          setChatMessages([
+          
+          let newChatMessages = [
               ...chatMessages, // copy the chatMessages array . <spread operator>
               {
-                message: "what is 1+1",
+                message: inputText,
                 sender: "user"
               }
             ]
-          );
+          setChatMessages(newChatMessages);
+
+          const chatResponse = chatbot.getResponse(inputText);
+          newChatMessages = [
+            ...newChatMessages,
+            {
+              message: chatResponse,
+              sender: "robot"
+            }
+          ]
+          setChatMessages(newChatMessages);
+          
+          
           setInputText(""); // Clear the input text after sending the message
         }
         return (
@@ -99,22 +115,22 @@
       // Note: in react we use state to save the data that changes over time
       const [chatMessages, setChatMessages] = React.useState(  //This will return two variable: 1. the current data 2. a function that used to update the data
         [
-          {
-            message: "Hello chatbot",
-            sender: "user"
-          },
-          {
-            message: "Hi how can I help",
-            sender: "robot"
-          },
-          {
-            message: "what is react?",
-            sender: "user"
-          },
-          {
-            message: "react is JS library for building UI",
-            sender: "robot"
-          }
+          // {
+          //   message: "Hello chatbot",
+          //   sender: "user"
+          // },
+          // {
+          //   message: "Hi how can I help",
+          //   sender: "robot"
+          // },
+          // {
+          //   message: "what is react?",
+          //   sender: "user"
+          // },
+          // {
+          //   message: "react is JS library for building UI",
+          //   sender: "robot"
+          // }
         ]
       );
       // const chatMessages = array[0];
