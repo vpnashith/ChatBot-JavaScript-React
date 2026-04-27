@@ -15,7 +15,7 @@
 
       //this is a React component, it is a function that returns JSX (a syntax extension for JavaScript that looks similar to HTML)
       function ChatInput({chatMessages, setChatMessages}){
-        const [inputText, setInputText] = React.useState(); // this is a state variable, it will hold the value of the input text, and setInputText is a function that we can use to update the value of inputText
+        const [inputText, setInputText] = React.useState(""); // this is a state variable, it will hold the value of the input text, and setInputText is a function that we can use to update the value of inputText
         
         function saveInputText(event){
           setInputText(event.target.value)
@@ -24,14 +24,15 @@
         function sendMessage(){
         // setChatMessages works s.t it will update the current value with whatever we are given.
         // Since we are using this function to update the array, react will rerun the code internally and HTML will updated
-        setChatMessages([
-            ...chatMessages, // copy the chatMessages array . <spread operator>
-            {
-              message: "what is 1+1",
-              sender: "user"
-            }
-          ]
-        );
+          setChatMessages([
+              ...chatMessages, // copy the chatMessages array . <spread operator>
+              {
+                message: "what is 1+1",
+                sender: "user"
+              }
+            ]
+          );
+          setInputText(""); // Clear the input text after sending the message
         }
         return (
           //this is a React Fragment, it allows us to return multiple elements without adding an extra node to the DOM
@@ -40,6 +41,7 @@
               placeholder= "Send a message to chatbot" 
               size="30" 
               onChange={saveInputText}
+              value={inputText}
             />
             <button onClick={sendMessage}>Send</button>
           </>
