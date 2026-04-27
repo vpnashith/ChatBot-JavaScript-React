@@ -2,6 +2,49 @@
 <html>
   <head>
     <title>Chatbot</title>
+
+    <style>
+
+      body {
+        font-family: Arial;
+      }
+
+      .send-button {
+        background-color: rgb(15, 174, 65);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        margin-left: 10px;
+        font-size: 15px;
+        cursor:pointer
+      }
+
+      .chat-input {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+
+        flex-grow: flex;
+
+      }
+
+      .chat-input-container {
+        display: flex;
+      }
+
+      .app-container {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .chat-message-user {
+        display: flex;
+        justify-content: flex-end;
+      }
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -52,15 +95,18 @@
         }
         return (
           //this is a React Fragment, it allows us to return multiple elements without adding an extra node to the DOM
-          <>
+          <div className="chat-input-container">
             <input 
               placeholder= "Send a message to chatbot" 
               size="30" 
               onChange={saveInputText}
               value={inputText}
+              className="chat-input"
             />
-            <button onClick={sendMessage}>Send</button>
-          </>
+            <button onClick={sendMessage} className="send-button">
+              Send
+            </button>
+          </div>
         )
       };
 
@@ -81,7 +127,7 @@
       }*/
 
       return (
-      <div>
+      <div className={sender === "user"? "chat-message-user": "chat-message-robot"}>
         {sender === "robot" && <img src="robot.png" width="50" />}
         {message}
         {sender === "user" && <img src="user.png" width="50" />}
@@ -137,7 +183,7 @@
       // const setChatMessages = array[1]; // In react we do not update the data directly, we have to use this function, otherwise the HTML won't get updated
 
     return (
-          <div>
+          <div className="app-container">
             <ChatInput 
               chatMessages={chatMessages} 
               setChatMessages={setChatMessages}
